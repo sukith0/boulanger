@@ -1,14 +1,18 @@
-<form action='' method='post'>
-        <input type='submit' name='deconnexion' value='Se déconnecter'>
-      </form>
+<?php if (isset($messagebienvenue)): ?>
+    <h2><?= $messagebienvenue ?></H2>
+<?php endif; ?>
 
-<form action='listing.php' method='get'>
-        <input type='submit' value='Tous les articles'>
-      </form>
+
+
+    <a href="../controller/logout.php">Déconnexion</a>
+
+    <a href="../controller/listing.php">Tout les produits</a>
+    <a href="../controller/panier.php">Votre panier</a>
 
 
     <h2>Produits Pour Vous :</h2>
-
+    
+    
 <?php
 while ($ligne = mysqli_fetch_assoc($resultat)): ?>
     <div>

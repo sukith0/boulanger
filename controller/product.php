@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $serveur = "localhost";
 $utilisateur = "phpmyadmin";
@@ -22,39 +23,29 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     }
 
     $produit = mysqli_fetch_assoc($resultat);
-    require_once("../view/productview.php");
-    ?>
 
-        <?php
-        // Traitement des formulaires
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (isset($_POST["reserver"])) {
-                // Code pour réduire le stock et enregistrer la réservation dans la base de données
-                $query = "UPDATE `products` SET `stock` = `stock` - 1 WHERE `id` = $idProduit";
-                mysqli_query($connexion, $query);
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["ajouter_panier"])) {
+        $idProduit = $_POST["id_produit"];
+        
+        if ($produit['stock'] > 0) {
+            $queryUpdateStock = "UPDATE `products` SET `stock` = `stock` - 1 WHERE `id` = $idProduit";
+            mysqli_query($connexion, $queryUpdateStock);
 
-                // Vous pouvez également enregistrer les détails de la réservation dans une table de réservations si nécessaire
-
-                echo "<p>Produit réservé avec succès!</p>";
-            } elseif (isset($_POST["annuler_reservation"])) {
-                // Code pour annuler la réservation et augmenter le stock dans la base de données
-                $query = "UPDATE `products` SET `stock` = `stock` + 1 WHERE `id` = $idProduit";
-                mysqli_query($connexion, $query);
-
-                // Vous pouvez également supprimer l'enregistrement de la réservation dans la table de réservations si nécessaire
-
-                echo "<p>Réservation annulée avec succès!</p>";
+            if (!isset($_SESSION['nb_articles_panier'])) {
+                $_SESSION['nb_articles_panier'] = 0;
             }
+            $_SESSION['nb_articles_panier']++;
+
+            $reservationReussi = "Produit ajouté au panier avec succès !";
+        } else {
+            $messageErreur = "Désolé, ce produit est actuellement en rupture de stock.";
         }
+    }
 
-        ?>
-        
-        
-<?php
-
+    
 } else {
     echo "<p>Identifiant de produit non valide.</p>";
 }
-
+require_once("../view/productview.php");
 mysqli_close($connexion);
 ?>
