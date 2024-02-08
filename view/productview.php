@@ -1,62 +1,98 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fiche Produit</title>
 </head>
-
 <body>
 
-    <h2>Fiche Produit</h2>
+<h2>Fiche Produit</h2>
+<!-- Affichage des détails du produit -->
+<table>
+    <tr>
+        <th>ID</th>
+        <td><?php echo isset($produit['id']) ? $produit['id'] : 'N/A'; ?></td>
+    </tr>
+    <tr>
+        <th>Nom</th>
+        <td><?php echo isset($produit['name']) ? $produit['name'] : 'N/A'; ?></td>
+    </tr>
+    <tr>
+        <th>Prix</th>
+        <td><?php echo isset($produit['price']) ? $produit['price'] : 'N/A'; ?></td>
+    </tr>
+    <tr>
+        <th>Référence</th>
+        <td><?php echo isset($produit['reference']) ? $produit['reference'] : 'N/A'; ?></td>
+    </tr>
+    <tr>
+        <th>Stock</th>
+        <td><?php echo isset($produit['stock']) ? $produit['stock'] : 'N/A'; ?></td>
+    </tr>
+</table>
+
+<?php if (isset($_SESSION['id_utilisateur']) && $_SESSION['id_utilisateur'] == 3): ?>
+    <!-- Afficher le bouton pour ajouter du stock -->
+    <form action="ajouter_stock.php" method="post">
+        <input type="hidden" name="id_produit" value="<?php echo $idProduit; ?>">
+        <input type="submit" name="ajouter_stock" value="Ajouter du stock">
+    </form>
+    
+    <?php
+    // Requête pour incrémenter le stock du produit dans la base de données
+    $queryUpdateStock = "UPDATE `products` SET `stock` = `stock` + 1 WHERE `id` = $idProduit";
+    // Exécution de la requête
+    mysqli_query($connexion, $queryUpdateStock);
+    ?>
+<?php endif; ?>
+
+
+<!-- Formulaire pour ajouter le produit au panier -->
+<form action='' method='post'>
+    <input type="hidden" name="id_produit" value="<?php echo $produit['id']; ?>">
+    <input type="submit" name="ajouter_panier" value="Ajouter au panier">
+</form>
+
+<!-- Affichage du panier -->
+<h2>Panier</h2>
+<?php
+// Vérifier si le panier est vide
+if (empty($_SESSION['panier'])) {
+    echo "Votre panier est vide.";
+} else {
+    // Afficher les produits dans le panier
+    ?>
+    
     <table>
         <tr>
-            <th>ID</th>
-            <td><?php echo isset($produit['id']) ? $produit['id'] : 'N/A'; ?></td>
-        </tr>
-
-        <tr>
-            <th>Nom</th>
-            <td><?php echo isset($produit['name']) ? $produit['name'] : 'N/A'; ?></td>
-        </tr>
-
-        <tr>
+            <th>ID Produit</th>
+            <th>Nom Produit</th>
             <th>Prix</th>
-            <td><?php echo isset($produit['price']) ? $produit['price'] : 'N/A'; ?></td>
+            <th>Quantité</th>
         </tr>
 
-        <tr>
-            <th>Référence</th>
-            <td><?php echo isset($produit['reference']) ? $produit['reference'] : 'N/A'; ?></td>
-        </tr>
+        <?php foreach ($_SESSION['panier'] as $produit_panier) { ?>
 
-        <tr>
-            <th>Stock</th>
-            <td><?php echo isset($produit['stock']) ? $produit['stock'] : 'N/A'; ?></td>
-        </tr>
+            <tr>
+                <td><?php echo $produit_panier['id_produit']; ?></td>
+                <td><?php echo $produit_panier['nom_produit']; ?></td>
+                <td><?php echo $produit_panier['prix']; ?></td>
+                <td><?php echo $produit_panier['quantite']; ?></td>
+            </tr>
+
+        <?php } ?>
+
     </table>
 
-
-
-    <form action='' method='post'>
-        <input type="hidden" name="id_produit" value="<?php echo $produit['id']; ?>">
-        <input type="submit" name="ajouter_panier" value="Ajouter au panier">
-    </form>
+<?php } ?>
 
 
 
-    <!-- Compteur d'articles -->
-    <div style="position: fixed; top: 10px; right: 10px; background-color: #ccc; padding: 5px;">
-        <?php
-        if (isset($_SESSION['nb_articles_panier'])) {
-            echo "Nombre d'articles dans le panier : " . $_SESSION['nb_articles_panier'];
-        } else {
-            echo "Nombre d'articles dans le panier : 0";
-        }
-        ?>
-    </div>
 
 </body>
-
 </html>
+
+<?php
+mysqli_close($connexion);
+?>

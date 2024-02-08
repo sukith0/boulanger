@@ -12,6 +12,7 @@ if (!$connexion) {
     die("La connexion a échoué : " . mysqli_connect_error());
 }
 
+
 // Initialiser le panier s'il n'existe pas déjà dans la session
 if (!isset($_SESSION['panier'])) {
     $_SESSION['panier'] = array();
@@ -26,6 +27,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if (!$resultat) {
         die("La requête a échoué : " . mysqli_error($connexion));
     }
+    
 
     $produit = mysqli_fetch_assoc($resultat);
 
@@ -44,7 +46,14 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 'quantite' => 1 // Nous ajoutons toujours une quantité de 1 lorsque l'utilisateur ajoute un produit
             );
 
-            $_SESSION['panier'][] = $panier_produit;
+            // Vérifier si le produit existe déjà dans le panier
+            if(isset($_SESSION['panier'][$idProduit])) {
+                // Si le produit existe, augmenter la quantité
+                $_SESSION['panier'][$idProduit]['quantite']++;
+            } else {
+                // Si le produit n'existe pas, l'ajouter au panier
+                $_SESSION['panier'][$idProduit] = $panier_produit;
+            }
 
             $reservationReussi = "Produit ajouté au panier avec succès !";
         } else {
@@ -56,6 +65,9 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 } else {
     echo "<p>Identifiant de produit non valide.</p>";
 }
+
+// Affichage de la vue du produit
 require_once("../view/productview.php");
-mysqli_close($connexion);
+
+
 ?>
