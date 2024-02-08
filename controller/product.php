@@ -12,6 +12,11 @@ if (!$connexion) {
     die("La connexion a échoué : " . mysqli_connect_error());
 }
 
+// Initialiser le panier s'il n'existe pas déjà dans la session
+if (!isset($_SESSION['panier'])) {
+    $_SESSION['panier'] = array();
+}
+
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $idProduit = $_GET['id'];
 
@@ -31,10 +36,15 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $queryUpdateStock = "UPDATE `products` SET `stock` = `stock` - 1 WHERE `id` = $idProduit";
             mysqli_query($connexion, $queryUpdateStock);
 
-            if (!isset($_SESSION['nb_articles_panier'])) {
-                $_SESSION['nb_articles_panier'] = 0;
-            }
-            $_SESSION['nb_articles_panier']++;
+            // Ajouter le produit au panier de l'utilisateur
+            $panier_produit = array(
+                'id_produit' => $produit['id'],
+                'nom_produit' => $produit['name'],
+                'prix' => $produit['price'],
+                'quantite' => 1 // Nous ajoutons toujours une quantité de 1 lorsque l'utilisateur ajoute un produit
+            );
+
+            $_SESSION['panier'][] = $panier_produit;
 
             $reservationReussi = "Produit ajouté au panier avec succès !";
         } else {
