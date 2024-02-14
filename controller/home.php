@@ -8,7 +8,6 @@ $baseDeDonnees = "boulanger";
 
 $connexion = mysqli_connect($serveur, $utilisateur, $motDePasse, $baseDeDonnees);
 
-$query = "SELECT * FROM `utilisateurs` WHERE `id` = 3";
 
 header("Cache-Control: no-cache, no-store, must-revalidate");
 header("Pragma: no-cache");
@@ -31,7 +30,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $resultat = mysqli_query($connexion, $query);
 
     if (mysqli_num_rows($resultat) == 1) {
+        $utilisateur = $resultat->fetch_assoc();
         $_SESSION["nom_utilisateur"] = $nom_utilisateur;
+        $_SESSION["id_utilisateur"] = intval($utilisateur['id']);
         header("Location: accueil.php"); 
         exit();
     } else {
@@ -41,4 +42,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 mysqli_close($connexion);
 require_once('../view/homeview.php');
+
 ?>

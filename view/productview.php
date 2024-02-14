@@ -32,22 +32,6 @@
     </tr>
 </table>
 
-<?php if (isset($_SESSION['id_utilisateur']) && $_SESSION['id_utilisateur'] == 3): ?>
-    <!-- Afficher le bouton pour ajouter du stock -->
-    <form action="ajouter_stock.php" method="post">
-        <input type="hidden" name="id_produit" value="<?php echo $idProduit; ?>">
-        <input type="submit" name="ajouter_stock" value="Ajouter du stock">
-    </form>
-    
-    <?php
-    // Requête pour incrémenter le stock du produit dans la base de données
-    $queryUpdateStock = "UPDATE `products` SET `stock` = `stock` + 1 WHERE `id` = $idProduit";
-    // Exécution de la requête
-    mysqli_query($connexion, $queryUpdateStock);
-    ?>
-<?php endif; ?>
-
-
 <!-- Formulaire pour ajouter le produit au panier -->
 <form action='' method='post'>
     <input type="hidden" name="id_produit" value="<?php echo $produit['id']; ?>">

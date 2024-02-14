@@ -27,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deconnexion"])) {
 }
 
 
-
 $query = "SELECT * FROM `products` ORDER BY RAND() LIMIT 2";
 $resultat = mysqli_query($connexion, $query);
 require_once('../view/accueilview.php');

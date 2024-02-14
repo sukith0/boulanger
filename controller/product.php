@@ -13,7 +13,6 @@ if (!$connexion) {
 }
 
 
-// Initialiser le panier s'il n'existe pas déjà dans la session
 if (!isset($_SESSION['panier'])) {
     $_SESSION['panier'] = array();
 }
@@ -27,12 +26,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     if (!$resultat) {
         die("La requête a échoué : " . mysqli_error($connexion));
     }
-    
 
     $produit = mysqli_fetch_assoc($resultat);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["ajouter_panier"])) {
         $idProduit = $_POST["id_produit"];
+    
+
         
         if ($produit['stock'] > 0) {
             $queryUpdateStock = "UPDATE `products` SET `stock` = `stock` - 1 WHERE `id` = $idProduit";
@@ -43,12 +43,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 'id_produit' => $produit['id'],
                 'nom_produit' => $produit['name'],
                 'prix' => $produit['price'],
-                'quantite' => 1 // Nous ajoutons toujours une quantité de 1 lorsque l'utilisateur ajoute un produit
-            );
+                'quantite' => 1             );
 
             // Vérifier si le produit existe déjà dans le panier
-            if(isset($_SESSION['panier'][$idProduit])) {
-                // Si le produit existe, augmenter la quantité
+            if (isset($_SESSION['panier'][$idProduit])) {
+
                 $_SESSION['panier'][$idProduit]['quantite']++;
             } else {
                 // Si le produit n'existe pas, l'ajouter au panier
@@ -60,8 +59,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $messageErreur = "Désolé, ce produit est actuellement en rupture de stock.";
         }
     }
-
-    
 } else {
     echo "<p>Identifiant de produit non valide.</p>";
 }
