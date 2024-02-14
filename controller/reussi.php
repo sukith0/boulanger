@@ -37,4 +37,6 @@ if (empty($_SESSION['panier'])) {
 
     echo "Commande effectué avec succès !";
 
+    require_once("../view/reussiview.php");
+
     

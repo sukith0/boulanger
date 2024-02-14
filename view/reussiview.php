@@ -6,7 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-<a href="../controller/reussi.php">Confirmer</a>
-<a href="../controller/panier.php">Annuler</a>
+    <br><a href="../controller/accueil.php">Retour à l'accueil</a></br>
 </body>
 </html>

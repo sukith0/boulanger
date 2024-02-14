@@ -17,5 +17,8 @@
             <input type='hidden' name='orto' value='$key'>
             <input type='submit' name='acheter_produit' value='Commander'>
             </form>
+            <a href="../controller/accueil.php">Retour</a>
 </body>
 </html>
+
+

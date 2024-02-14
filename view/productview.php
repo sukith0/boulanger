@@ -72,7 +72,7 @@ if (empty($_SESSION['panier'])) {
 <?php } ?>
 
 
-
+<a href="../controller/accueil.php">Retour à l'acuueil</a>
 
 </body>
 </html>

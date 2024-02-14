@@ -16,7 +16,6 @@ if (!$resultat) {
 }
 
 
-while ($order = mysqli_fetch_assoc($resultat)) {
-    echo "<a href:../controller/recap.php>commande</a> :"." ". $order["id"]." ". $order["date"]. "<br>";
-};
 
+
+require_once("../view/commandesview.php");

@@ -5,9 +5,9 @@
 
 
     <a href="../controller/logout.php">Déconnexion</a>
-
     <a href="../controller/listing.php">Tout les produits</a>
     <a href="../controller/panier.php">Votre panier</a>
+    <a href="../controller/commandes.php">Vos commandes</a>
 
 
     <h2>Produits Pour Vous :</h2>
