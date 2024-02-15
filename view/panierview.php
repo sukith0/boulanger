@@ -7,7 +7,9 @@
     <title>Votre Panier</title>
 
 </head>
-
+<header>
+    
+</header>
 <body>
     
     

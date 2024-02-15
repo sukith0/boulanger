@@ -36,4 +36,4 @@ while ($lienProduct = mysqli_fetch_assoc($resultat2)) {
 
 }}
 
-
+require_once("../view/recapview.php");

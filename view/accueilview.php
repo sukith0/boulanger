@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<header>
+    
+</header>
+<body>
+    
+
+
 <?php if (isset($messagebienvenue)): ?>
     <h2><?= $messagebienvenue ?></H2>
 <?php endif; ?>
@@ -35,3 +49,5 @@ while ($ligne = mysqli_fetch_assoc($resultat)): ?>
 <?php
 mysqli_close($connexion);
 ?>
+</body>
+</html>
