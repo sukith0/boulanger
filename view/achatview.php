@@ -8,8 +8,10 @@
 <header>
     
 </header>
-<body>
-<a href="../controller/reussi.php">Confirmer</a>
-<a href="../controller/panier.php">Annuler</a>
-</body>
+    <body>
+
+        <a href="../controller/reussi.php">Confirmer</a>
+        <a href="../controller/panier.php">Annuler</a>
+
+    </body>
 </html>
